@@ -318,7 +318,7 @@ float BookBuilder<PLAYER>::Worker::operator()(const SgMove& move)
     HexEval score;
     m_brd->GetPosition().SetPosition(state.Position());
     m_player->GenMove(state, game, *m_brd, 99999, score);
-    return score;
+    return (float)score;
 }
 
 //----------------------------------------------------------------------------

@@ -318,7 +318,7 @@ void WolveSearch::OrderMoves(const bitset_t& consider,
     std::size_t width = m_plyWidth;
     if (0 < m_specificPlyWidths.size())
     {
-        BenzeneAssert(std::size_t(CurrentDepth()) < m_plyWidth.size());
+      //BenzeneAssert(std::size_t(CurrentDepth()) < m_plyWidth.size());
         width = m_specificPlyWidths[CurrentDepth()];
     }
     const std::size_t movesToCopy = std::min(mvsc.size(), width);
