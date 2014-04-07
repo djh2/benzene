@@ -51,25 +51,11 @@ void ParseJoblevelCmd(std::string strmoves, std::string strcmds, std::vector<std
 {
   //parse gtp cmds from argc and argv and save to vector.
   static bool isBlack = true;
-  struct MoveToCmd
-  {
-    std::string operator()(std::string const &str) { 
-      std::string ret = isBlack?("play b"+str):("play w"+str); isBlack != isBlack; 
-      return ret; 
-    }
-  };
-  struct ExtractCmd
-  {
-    std::string operator()(std::string const &str) { 
-      return str; 
-    }
-  };
-
-  boost::char_separator<char> sep(",");  
-
-  
+  std::string s = std::string(strcmds);
+  std::replace( s.begin(), s.end(), '_', ' ');  //restore the space.
+  boost::char_separator<char> sep(",");
   boost::tokenizer<boost::char_separator<char> > tok(strmoves,sep);  
-  boost::tokenizer<boost::char_separator<char> > cmdtok(strcmds,sep);
+  boost::tokenizer<boost::char_separator<char> > cmdtok(s,sep);
 
   for(boost::tokenizer< boost::char_separator<char> >::iterator beg=tok.begin(); beg!=tok.end();++beg){
     std::string str = std::string(*beg);
@@ -77,6 +63,7 @@ void ParseJoblevelCmd(std::string strmoves, std::string strcmds, std::vector<std
     isBlack = !isBlack;
     cmds.push_back(ret);
   }
+
   for(boost::tokenizer< boost::char_separator<char> >::iterator beg=cmdtok.begin(); beg!=cmdtok.end();++beg){
     std::string ret = std::string(*beg);
     cmds.push_back(ret);
@@ -88,7 +75,7 @@ void ParseJoblevelCmd(std::string strmoves, std::string strcmds, std::vector<std
 //----------------------------------------------------------------------------
 void JobLevelCommander(std::vector<std::string> cmds)
 {
-  //fork then wait, and write to stdin.
+  //fork then wait, and io redirect to control via GTP.
   int pipefd[2]={0};
   if(pipe(pipefd) < 0)
   {
@@ -99,7 +86,7 @@ void JobLevelCommander(std::vector<std::string> cmds)
   int pid = fork();
   if(pid == 0)
   {
-    sleep(2);
+    sleep(1);
     close(pipefd[0]);
     dup2(pipefd[1],fileno(stdout));  //output to pipe
     for(int i = 0; i < cmds.size(); i++)

@@ -83,7 +83,7 @@ void BenzeneProgram::RegisterCmdLineArguments()
          "Moves to the target board,separate by comma, alternate from black,ie,'A9,B7,C7  ->B:A9;W:B7,B:C7'")
         ("gtpcmds",
          po::value<std::string>(&m_gtpcmds)->default_value(""),
-         "GtpCmd to the AI after apply the moves(if any).'compute-inferior b','genmove w',etc.");
+         "GtpCmd to the AI after apply the moves(if any).'compute-inferior_b','genmove_w',etc. Note: spaces are replace with _");
 }
 
 void BenzeneProgram::InitLog()
