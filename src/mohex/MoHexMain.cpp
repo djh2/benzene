@@ -64,30 +64,53 @@ void ParseJoblevelCmd(std::string strmoves, std::string strcmds, std::vector<std
       return str; 
     }
   };
-  
-  boost::tokenizer<> tok(strmoves);
-  boost::tokenizer<> cmdtok(strcmds);
 
-  for(boost::tokenizer<>::iterator beg=tok.begin(); beg!=tok.end();++beg){
+  boost::char_separator<char> sep(",");  
+
+  
+  boost::tokenizer<boost::char_separator<char> > tok(strmoves,sep);  
+  boost::tokenizer<boost::char_separator<char> > cmdtok(strcmds,sep);
+
+  for(boost::tokenizer< boost::char_separator<char> >::iterator beg=tok.begin(); beg!=tok.end();++beg){
     std::string str = std::string(*beg);
     std::string ret = isBlack?("play b "+str):("play w "+str); 
     isBlack = !isBlack;
     cmds.push_back(ret);
   }
-  for(boost::tokenizer<>::iterator beg=cmdtok.begin(); beg!=cmdtok.end();++beg){
+  for(boost::tokenizer< boost::char_separator<char> >::iterator beg=cmdtok.begin(); beg!=cmdtok.end();++beg){
     std::string ret = std::string(*beg);
     cmds.push_back(ret);
   }
-
+  if(cmds.size() > 0)
+    cmds.push_back(std::string("quit"));
 }
 
 //----------------------------------------------------------------------------
 void JobLevelCommander(std::vector<std::string> cmds)
-{  
+{
   //fork then wait, and write to stdin.
-  for(int i = 0; i < cmds.size(); i++)
+  int pipefd[2]={0};
+  if(pipe(pipefd) < 0)
   {
-    std::cout<<cmds[i].c_str()<<std::endl; 
+    std::cout<<"fail to create pipe"<<std::endl;
+    return;
+  }
+
+  int pid = fork();
+  if(pid == 0)
+  {
+    sleep(2);
+    close(pipefd[0]);
+    dup2(pipefd[1],fileno(stdout));  //output to pipe
+    for(int i = 0; i < cmds.size(); i++)
+      {
+	std::cout<<cmds[i].c_str()<<std::endl; 
+      }
+  }
+  else
+  {
+    close(pipefd[1]);
+    dup2(pipefd[0],fileno(stdin));  //intput from pipe
   }
 }
 
@@ -101,18 +124,22 @@ int main(int argc, char** argv)
     program.Initialize(argc, argv);
     MoHexPlayer player;
     std::vector<std::string> jobLevelCmds;
+
     try
     {
         MoHexEngine gh(program.BoardSize(), player);
             std::string config = program.ConfigFileToExecute();
         if (config != "")
             gh.ExecuteFile(config);
-	
+
+	//------------------------------------------------------------------
 	ParseJoblevelCmd(program.GetMoves(),program.GetCmds(),jobLevelCmds);
 	if(jobLevelCmds.size() > 0)
 	{
 	  JobLevelCommander(jobLevelCmds);
 	}
+	//------------------------------------------------------------------
+
         GtpInputStream gin(std::cin);
         GtpOutputStream gout(std::cout);
         gh.MainLoop(gin, gout);
