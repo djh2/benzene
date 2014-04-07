@@ -77,7 +77,13 @@ void BenzeneProgram::RegisterCmdLineArguments()
         ("seed", 
          po::value<int>(&m_random_seed)->default_value(-1),
          "Sets the seed for the random number generator. "
-         "(-1 for current time)");
+         "(-1 for current time)")
+        ("moves",
+         po::value<std::string>(&m_moves)->default_value(""),
+         "Moves to the target board,separate by comma, alternate from black,ie,'A9,B7,C7  ->B:A9;W:B7,B:C7'")
+        ("gtpcmds",
+         po::value<std::string>(&m_gtpcmds)->default_value(""),
+         "GtpCmd to the AI after apply the moves(if any).'compute-inferior b','genmove w',etc.");
 }
 
 void BenzeneProgram::InitLog()

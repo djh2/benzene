@@ -10,6 +10,7 @@
 
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/variables_map.hpp>
+#include <boost/tokenizer.hpp>
 
 #include "Logger.hpp"
 #include "Benzene.hpp"
@@ -70,6 +71,9 @@ public:
     /** Returns the build date of the program. */
     std::string GetDate() const;
 
+    /** Returns the cmd and moves from job level */
+    std::string GetCmds() const;
+    std::string GetMoves() const;
     //-----------------------------------------------------------------------
 
     /** Returns the configuration file that should be parsed.  This
@@ -92,6 +96,10 @@ private:
     std::string m_executable_name;
 
     std::string m_executable_path;
+  
+    std::string m_moves;
+
+    std::string m_gtpcmds;
 
     int m_random_seed;
 
@@ -117,6 +125,16 @@ private:
 inline std::string BenzeneProgram::GetName() const
 {
     return m_name;
+}
+
+inline std::string BenzeneProgram::GetCmds() const
+{
+    return m_gtpcmds;
+}
+
+inline std::string BenzeneProgram::GetMoves() const
+{
+    return m_moves;
 }
 
 inline std::string BenzeneProgram::GetVersion() const
