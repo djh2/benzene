@@ -142,7 +142,6 @@ src/book/Makefile
 src/solver/Makefile 
 src/simpleplayers/Makefile
 src/commonengine/Makefile 
-src/wolve/Makefile 
 src/mohex/Makefile
 src/benzenetest/Makefile
 src/test/Makefile
