@@ -9,5 +9,6 @@ solver \
 simpleplayers \
 commonengine \
 mohex \
+wolve \
 benzenetest \
 test
