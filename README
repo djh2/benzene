@@ -1,3 +1,10 @@
+Unabashedly modified/hacked together by djh2.
+
+This repo contains altered version of benzene project's hex-playing engines (original at http://sourceforge.net/projects/benzene/) that wouldn't compile before.
+
+See also: https://github.com/djh2/fuego-benzene
+
+
 Project Benzene README
 
 ----------------------
@@ -6,7 +13,7 @@ Project Benzene README
 
 Checkout the source from sourceforge using git:
 
-git clone git://benzene.git.sourceforge.net/gitroot/benzene/benzene benzene
+git clone git://git.code.sf.net/p/benzene/benzene benzene-benzene
 
 ----------
  Building
