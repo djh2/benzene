@@ -28,7 +28,7 @@ void MiscUtil::FindProgramDir(int argc, char* argv[])
 {
     if (argc == 0 || argv == 0)
         return;
-    programDir = path(argv[0], native).branch_path();
+    programDir = path(argv[0], native).parent_path();
 }
 
 void MiscUtil::WordToBytes(unsigned word, byte* out)
@@ -70,7 +70,7 @@ std::string MiscUtil::OpenFile(std::string name, std::ifstream& f)
     {
         path p = programDir / name;
         p.normalize();
-        programDirFile = p.native_file_string();
+        programDirFile = p.native();
         f.open(programDirFile.c_str());
         if (f.is_open())
             return programDirFile;
@@ -78,7 +78,7 @@ std::string MiscUtil::OpenFile(std::string name, std::ifstream& f)
     {
         path p = boost::filesystem::path(ABS_TOP_SRCDIR) / "share" / name;
         p.normalize();
-        absFile = p.native_file_string();
+        absFile = p.native();
         f.open(absFile.c_str());
         if (f.is_open())
             return absFile;
@@ -86,7 +86,7 @@ std::string MiscUtil::OpenFile(std::string name, std::ifstream& f)
     {
         path p = boost::filesystem::path(DATADIR) / name;
         p.normalize();
-        dataFile = p.native_file_string();
+        dataFile = p.native();
         f.open(dataFile.c_str());
         if (f.is_open())
             return dataFile;
