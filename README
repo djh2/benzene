@@ -1,4 +1,6 @@
-Modifies benzene project's hex-playing engines (original at http://sourceforge.net/projects/benzene/) to compile with version 1.57 of boost libraries.
+Modifies benzene project's hex-playing engines (original at http://sourceforge.net/projects/benzene/)
+to compile with version 1.57 of boost libraries.
+
 See also: https://github.com/djh2/fuego-benzene
 
 
