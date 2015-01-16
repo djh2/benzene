@@ -1,10 +1,8 @@
-Unabashedly modified/hacked together by djh2.
-
-This repo contains altered version of benzene project's hex-playing engines (original at http://sourceforge.net/projects/benzene/) that wouldn't compile before.
-
+Modifies benzene project's hex-playing engines (original at http://sourceforge.net/projects/benzene/) to compile with current version (1.57) of boost libraries.
 See also: https://github.com/djh2/fuego-benzene
 
 
+ORIGINAL README
 Project Benzene README
 
 ----------------------
